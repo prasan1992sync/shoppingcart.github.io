@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>The Generics | Store</title>
+        <meta name="description" content="This is the description">
+        <link rel="stylesheet" href="styles.css" />
+        <script src="store.js"></script>
+    </head>
+    <body>
+        <script>  
+            fetch("cart.json").then(function(response) {
+                response.text().then(function(data){
+                    getData(JSON.parse(data).items);
+                })
+            });
+            function getData(data) {
+                for (let i = 0; i < data.length; i++) {
+                    let div = document.createElement('div'); 
+                    div.className = 'shop-item';
+                    let divTitle = document.createElement('div');
+                    divTitle.className = 'shop-item-title';
+                    divTitle.innerHTML = data[i].name;
+                    let image = document.createElement('img');
+                    image.className = 'shop-item-image';
+                    image.src = data[i].image;
+                    let divDetails = document.createElement('div');
+                    divDetails.className = 'shop-item-details';
+                    let shopItems = document.getElementsByClassName("shop-items");
+                    shopItems[0].appendChild(div);
+                    div.appendChild(divTitle);
+                    div.appendChild(image);
+                    div.appendChild(divDetails);
+                    let spanRed = document.createElement('span');
+                    spanRed.className = 'shop-item-display';
+                    spanRed.innerHTML =  "Rs" + data[i].price.display;
+                    let spanActual = document.createElement('span');
+                    spanActual.className = 'shop-item-red';
+                    spanActual.innerHTML =  "Rs" + data[i].price.actual;
+                    spanActual.style.marginLeft = "10px";
+                    let spanPrice = document.createElement('span');
+                    spanPrice.className = 'shop-item-price';
+                    spanPrice.style.color = 'red';
+                    spanPrice.style.textDecoration = 'line-through';
+                    spanPrice.appendChild(spanRed);
+                    divDetails.appendChild(spanPrice);
+                    divDetails.appendChild(spanActual);
+                    let button = document.createElement('button');
+                    button.className = 'btn btn-primary shop-item-button'
+                    button.type = 'button';
+                    button.innerHTML = 'ADD TO CART';
+                    button.style.marginLeft = "10px";
+                    divDetails.appendChild(button);
+                    let divDiscount = document.createElement('div');
+                    divDiscount.className = 'shop-discount';
+                    divDiscount.innerHTML = "Discount Upto" + " " + data[i].discount + " %";
+                    divDiscount.style.marginLeft = "46px";
+                    divDiscount.style.marginTop = "25px";
+                    divDiscount.style.border = "dotted";
+                    divDiscount.style.borderColor = "red";
+                    div.appendChild(divDiscount); 
+                }
+                ready();
+            }
+
+            function ready() {
+    var removeCartItemButtons = document.getElementsByClassName('btn-danger')
+    for (var i = 0; i < removeCartItemButtons.length; i++) {
+        var button = removeCartItemButtons[i]
+        button.addEventListener('click', removeCartItem)
+    }
+
+    var quantityInputs = document.getElementsByClassName('cart-quantity-input')
+    for (var i = 0; i < quantityInputs.length; i++) {
+        var input = quantityInputs[i]
+        input.addEventListener('change', quantityChanged)
+    }
+
+    var addToCartButtons = document.getElementsByClassName('shop-item-button')
+    for (var i = 0; i < addToCartButtons.length; i++) {
+        var button = addToCartButtons[i]
+        button.addEventListener('click', addToCartClicked)
+    }
+
+    document.getElementsByClassName('btn-purchase')[0].addEventListener('click', purchaseClicked)
+}
+        </script>
+        <section class="container content-section">
+            <h2 class="section-header">TV Series</h2>
+            <div class="shop-items">
+                <!-- <div class="shop-item">
+                    <span class="shop-item-title">Album 1</span>
+                    <img class="shop-item-image" src="Images/Album 1.png">
+                    <div class="shop-item-details">
+                        <span class="shop-item-price">$12.99</span>
+                        <button class="btn btn-primary shop-item-button" type="button">ADD TO CART</button>
+                    </div>
+                </div>
+                <div class="shop-item">
+                    <span class="shop-item-title">Album 2</span>
+                    <img class="shop-item-image" src="Images/Album 2.png">
+                    <div class="shop-item-details">
+                        <span class="shop-item-price">$14.99</span>
+                        <button class="btn btn-primary shop-item-button"type="button">ADD TO CART</button>
+                    </div>
+                </div>
+                <div class="shop-item">
+                    <span class="shop-item-title">Album 3</span>
+                    <img class="shop-item-image" src="Images/Album 3.png">
+                    <div class="shop-item-details">
+                        <span class="shop-item-price">$9.99</span>
+                        <button class="btn btn-primary shop-item-button" type="button">ADD TO CART</button>
+                    </div>
+                </div>
+                <div class="shop-item">
+                    <span class="shop-item-title">Album 4</span>
+                    <img class="shop-item-image" src="Images/Album 4.png">
+                    <div class="shop-item-details">
+                        <span class="shop-item-price">$19.99</span>
+                        <button class="btn btn-primary shop-item-button" type="button">ADD TO CART</button>
+                    </div>
+                </div> -->
+            </div>
+        </section>
+        <section class="container content-section">
+            <h2 class="section-header">CART</h2>
+            <div class="cart-row">
+                <span class="cart-item cart-header cart-column">ITEM</span>
+                <span class="cart-price cart-header cart-column">PRICE</span>
+                <span class="cart-quantity cart-header cart-column">QUANTITY</span>
+            </div>
+            <div class="cart-items">
+            </div>
+            <div class="cart-total">
+                <strong class="cart-total-title">Total</strong>
+                <span class="cart-total-price">Rs0</span>
+            </div>
+            <button class="btn btn-primary btn-purchase" type="button">PURCHASE</button>
+        </section>
+    </body>
+</html>
